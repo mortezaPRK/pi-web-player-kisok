@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+while read oneline
+do
+   keyline=$(echo $oneline | grep " key " | grep pressed | grep current | sed 's/.*key pressed: \(.*\) (.* .*/\1/');
+
+   case $keyline in
+      "up")
+      key=103
+      ;;
+
+      "down")
+      key=108
+      ;;
+
+      "left")
+      key=105
+      ;;
+
+      "right")
+      key=106
+      ;;
+
+      "select")
+      key=28
+      ;;
+
+      *)
+      continue
+      ;;
+   esac
+   echo "received ${keyline}";
+   /usr/local/bin/ydotool key $key:1 $key:0;
+   
+done < <(/usr/bin/cec-client)

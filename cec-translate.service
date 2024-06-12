@@ -1,0 +1,17 @@
+[Unit]
+Description=Starts cec to ydotool translator
+After=ydotoold.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+Environment="YDOTOOL_SOCKET=/tmp/.ydotool_socket"
+ExecStart=/usr/local/bin/cec-translate
+KillMode=process
+TimeoutSec=180
+User=pi
+Group=pi
+
+[Install]
+WantedBy=basic.target

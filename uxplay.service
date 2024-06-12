@@ -1,0 +1,17 @@
+[Unit]
+Description=Starts uxplay
+After=ydotoold.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+ExecStart=/usr/bin/uxplay -n rpi -nh  -vs waylandsink
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+KillMode=process
+TimeoutSec=180
+User=pi
+Group=pi
+
+[Install]
+WantedBy=basic.target
