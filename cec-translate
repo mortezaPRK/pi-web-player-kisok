@@ -27,6 +27,16 @@ do
       key=28
       ;;
 
+      "F2 (red)")
+      sudo reboot;
+      continue
+      ;;
+
+      "F1 (blue)")
+      ydotool mousemove 1000 1000;
+      continue
+      ;;
+
       *)
       continue
       ;;
