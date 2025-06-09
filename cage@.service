@@ -14,7 +14,7 @@ Type=simple
 ExecStart=/usr/bin/cage /usr/local/bin/chromium_launcher
 Environment="URL=<UPDATE ME>"
 Restart=always
-User=pi
+User=1000
 UtmpIdentifier=%I
 UtmpMode=user
 TTYPath=/dev/%I
@@ -22,7 +22,7 @@ TTYReset=yes
 TTYVHangup=yes
 TTYVTDisallocate=yes
 StandardInput=tty-fail
-PAMName=pi
+PAMName=1000
 
 [Install]
 WantedBy=graphical.target

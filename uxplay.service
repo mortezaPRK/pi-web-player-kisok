@@ -10,8 +10,8 @@ ExecStart=/usr/bin/uxplay -n rpi -nh  -vs waylandsink
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
 KillMode=process
 TimeoutSec=180
-User=pi
-Group=pi
+User=1000
+Group=1000
 
 [Install]
 WantedBy=basic.target

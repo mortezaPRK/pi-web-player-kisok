@@ -10,8 +10,8 @@ Environment="YDOTOOL_SOCKET=/tmp/.ydotool_socket"
 ExecStart=/usr/local/bin/cec-translate
 KillMode=process
 TimeoutSec=180
-User=pi
-Group=pi
+User=1000
+Group=1000
 
 [Install]
 WantedBy=basic.target
