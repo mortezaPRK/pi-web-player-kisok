@@ -11,5 +11,6 @@
 --enable-features=OverlayScrollbar \
 --enable-features=UseOzonePlatform  \
 --homepage="$URL" \
+--user-agent="Mozilla/5.0 (Linux; Android 9; SHIELD Android TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36" \
 --kiosk \
 "$URL"
