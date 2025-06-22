@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Youtube",
+        "url": "https://www.youtube.com/",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png",
+    },
+    {
+        "name": "Bigs Buck Bunny",
+        "stream": "https://test-streams.mux.dev/x36xhzz/url_6/193039199_mp4_h264_aac_hq_7.m3u8",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg"
+    }
+]

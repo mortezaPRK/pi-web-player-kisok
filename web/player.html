@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS Video Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        #videoContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+        
+        /* Ensure container fills the screen in fullscreen mode */
+        #videoContainer:fullscreen {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain; /* Maintain aspect ratio while filling container */
+        }
+        
+        /* Style for fullscreen video */
+        video:fullscreen, div:fullscreen video {
+            object-fit: contain;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="videoContainer">
+            <video id="video" controls></video>
+            <div id="status" class="status"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const video = document.getElementById('video');
+            const status = document.getElementById('status');
+            const urlParams = new URLSearchParams(window.location.search);
+            const streamUrl = urlParams.get('stream');
+
+            const hls = new Hls({
+                debug: false,
+                enableWorker: true
+            });
+
+            hls.loadSource(streamUrl);
+            hls.attachMedia(video);
+
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                showStatus('Stream loaded');
+                // Try to play and go fullscreen after manifest is parsed
+                playAndEnterFullscreen();
+            });
+            
+            hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                // Media attached is also a good time to try play + fullscreen
+                playAndEnterFullscreen();
+            });
+
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                if (data.fatal) {
+                    switch (data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            showStatus('Network error, trying to recover...');
+                            hls.startLoad();
+                            break;
+                        case Hls.ErrorTypes.MEDIA_ERROR:
+                            showStatus('Media error, trying to recover...');
+                            hls.recoverMediaError();
+                            break;
+                        default:
+                            showStatus('Fatal error: ' + data.details);
+                            console.error('Fatal error:', data);
+                            break;
+                    }
+                }
+            });
+
+            // Keyboard controls
+            document.addEventListener('keydown', function (e) {
+                if (document.activeElement.tagName !== 'INPUT' &&
+                    document.activeElement.tagName !== 'TEXTAREA') {
+                    switch (e.key) {
+                        case 'Enter':
+                        case ' ':
+                            togglePlayPause();
+                            e.preventDefault();
+                            break;
+                        case 'ArrowLeft':
+                            seekBack();
+                            e.preventDefault();
+                            break;
+                        case 'ArrowRight':
+                            seekForward();
+                            e.preventDefault();
+                            break;
+                        case 'ArrowUp':
+                            changeVolume(0.1);
+                            e.preventDefault();
+                            break;
+                        case 'ArrowDown':
+                            changeVolume(-0.1);
+                            e.preventDefault();
+                            break;
+                        case 'f':
+                        case 'F':
+                            toggleFullscreen();
+                            e.preventDefault();
+                            break;
+                    }
+                }
+            });
+
+            function togglePlayPause() {
+                if (video.paused) {
+                    video.play();
+                    showStatus('Playing');
+                } else {
+                    video.pause();
+                    showStatus('Paused');
+                }
+            }
+
+            function seekBack() {
+                video.currentTime = Math.max(video.currentTime - 10, 0);
+                showStatus('Back 10s');
+            }
+
+            function seekForward() {
+                video.currentTime = Math.min(video.currentTime + 10, video.duration);
+                showStatus('Forward 10s');
+            }
+
+            function changeVolume(change) {
+                video.volume = Math.min(Math.max(video.volume + change, 0), 1);
+                showStatus(`Volume: ${Math.round(video.volume * 100)}%`);
+            }
+
+            function toggleMute() {
+                video.muted = !video.muted;
+                showStatus(video.muted ? 'Muted' : 'Unmuted');
+            }
+
+            function toggleFullscreen(on) {
+                if (on === undefined ? !document.fullscreenElement : on) {
+                    // Try multiple fullscreen approaches
+                    try {
+                        // Try standard approaches with fallbacks
+                        if (videoContainer.requestFullscreen) {
+                            videoContainer.requestFullscreen();
+                        } else if (videoContainer.mozRequestFullScreen) {
+                            videoContainer.mozRequestFullScreen();
+                        } else if (videoContainer.webkitRequestFullscreen) {
+                            videoContainer.webkitRequestFullscreen();
+                        } else if (videoContainer.msRequestFullscreen) {
+                            videoContainer.msRequestFullscreen();
+                        } else {
+                            // If native fullscreen APIs aren't available, try document level
+                            if (document.documentElement.requestFullscreen) {
+                                document.documentElement.requestFullscreen();
+                            } else {
+                                // Last resort: CSS-based fullscreen simulation
+                                maximizeVideoContainer();
+                                return;
+                            }
+                        }
+                        showStatus('Fullscreen mode');
+                    } catch(e) {
+                        console.error('Fullscreen error:', e);
+                        // Fallback to CSS-based maximization
+                        maximizeVideoContainer();
+                    }
+                } else {
+                    try {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                            document.mozCancelFullScreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) {
+                            document.msExitFullscreen();
+                        }
+                        showStatus('Exit fullscreen');
+                    } catch(e) {
+                        console.error('Exit fullscreen error:', e);
+                    }
+                }
+            }
+
+
+            function showStatus(message) {
+                status.textContent = message;
+                status.style.display = 'block';
+
+                clearTimeout(status.timeout);
+                status.timeout = setTimeout(() => {
+                    status.style.display = 'none';
+                }, 2000);
+            }
+            
+            // Unified function to handle play and fullscreen
+            async function playAndEnterFullscreen() {
+                try {
+                    // First try to play the video
+                    await video.play();
+                    
+                    // For Chrome Kiosk mode, try all these approaches
+                    
+                    // 1. Try standard fullscreen API on video container
+                    try {
+                        await videoContainer.requestFullscreen();
+                        showStatus('Fullscreen mode');
+                        return;
+                    } catch(e) {
+                        console.log('Standard fullscreen failed:', e);
+                    }
+                    
+                    // 2. Try document fullscreen if container fullscreen fails
+                    try {
+                        await document.documentElement.requestFullscreen();
+                        showStatus('Document fullscreen mode');
+                        return;
+                    } catch(e) {
+                        console.log('Document fullscreen failed:', e);
+                    }
+                    
+                    // 3. Maximize container size via CSS as fallback
+                    maximizeVideoContainer();
+                    
+                } catch(error) {
+                    console.error('Play or fullscreen error:', error);
+                    // Try play again with user interaction via a click event
+                    document.addEventListener('click', function playOnClick() {
+                        video.play().then(() => toggleFullscreen(true))
+                            .catch(e => console.error('Play on click failed:', e));
+                        document.removeEventListener('click', playOnClick);
+                    }, { once: true });
+                }
+            }
+            
+            // Maximize container size via CSS as a fallback
+            function maximizeVideoContainer() {
+                document.body.style.margin = "0";
+                document.body.style.padding = "0";
+                document.body.style.overflow = "hidden";
+                
+                const container = document.querySelector('.container');
+                container.style.width = "100vw";
+                container.style.maxWidth = "100vw";
+                container.style.height = "100vh";
+                
+                videoContainer.style.width = "100%";
+                videoContainer.style.height = "100vh";
+                
+                video.style.width = "100%";
+                video.style.height = "100vh";
+                video.style.objectFit = "contain";
+                
+                showStatus('Maximized video');
+            }
+
+            video.addEventListener('loadedmetadata', function () {
+                console.log('Video duration:', video.duration);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Center</title>
+    <style>
+        :root {
+            --focus-color: #007bff;
+            --tile-bg: rgba(30, 30, 30, 0.8);
+            --tile-hover: rgba(40, 40, 40, 0.9);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .tiles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 0 auto;
+        }
+
+        .tile {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            aspect-ratio: 16/9;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background-color: var(--tile-bg);
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background-color: var(--tile-hover);
+        }
+
+        .tile.focused {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 4px var(--focus-color), 0 15px 30px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+        }
+
+        .tile-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .tile.focused .tile-image {
+            opacity: 1;
+        }
+
+        .tile-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tile-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        #loadingIndicator {
+            text-align: center;
+            width: 100%;
+            padding: 3rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Media Center</h1>
+        <div id="tilesContainer" class="tiles-container">
+            <div id="loadingIndicator">
+                Loading tiles...
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tiles data will be loaded from tiles.json
+        let tiles = [];
+        
+        // Fetch tiles data from JSON file
+        async function loadTiles() {
+            try {
+                const response = await fetch('tiles.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load tiles data');
+                }
+                tiles = await response.json();
+                initializeTiles();
+            } catch (error) {
+                console.error('Error loading tiles:', error);
+                // Fallback message if tiles can't be loaded
+                document.getElementById('tilesContainer').innerHTML = 
+                    '<div style="text-align: center; padding: 2rem; color: #ff6b6b;">Failed to load tiles data. Please check the connection or try again later.</div>';
+            } finally {
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+            }
+        }
+
+        // Initialize the tile grid
+        function initializeTiles() {
+            const tilesContainer = document.getElementById('tilesContainer');
+            // Clear loading indicator
+            tilesContainer.innerHTML = '';
+
+            tiles.forEach((tile, index) => {
+                const tileElement = document.createElement('div');
+                tileElement.className = 'tile';
+                tileElement.dataset.index = index;
+                
+                // Build the final URL in initialize function
+                // If it's a stream, build player URL, otherwise use the direct URL
+                const finalUrl = tile.stream 
+                    ? `player.html?stream=${encodeURIComponent(tile.stream)}`
+                    : tile.url;
+                tileElement.dataset.url = finalUrl;
+
+                const imageElement = document.createElement('img');
+                imageElement.className = 'tile-image';
+                imageElement.src = tile.image;
+                imageElement.alt = tile.name;
+
+                const contentElement = document.createElement('div');
+                contentElement.className = 'tile-content';
+
+                const nameElement = document.createElement('div');
+                nameElement.className = 'tile-name';
+                nameElement.textContent = tile.name;
+
+                contentElement.appendChild(nameElement);
+                tileElement.appendChild(imageElement);
+                tileElement.appendChild(contentElement);
+
+                tilesContainer.appendChild(tileElement);
+            });
+
+            // Set focus to the first tile by default
+            const firstTile = document.querySelector('.tile');
+            firstTile.classList.add('focused');
+            currentFocusIndex = 0;
+        }
+
+        // Initialize keyboard navigation
+        let currentFocusIndex = 0;
+        let gridColumns = Math.floor(window.innerWidth / 330); // Approximate number of columns
+
+        function navigateGrid(direction) {
+            const allTiles = document.querySelectorAll('.tile');
+            const totalTiles = allTiles.length;
+
+            // Remove current focus
+            allTiles[currentFocusIndex].classList.remove('focused');
+
+            // Calculate new focus position based on direction
+            switch (direction) {
+                case 'up':
+                    currentFocusIndex = (currentFocusIndex - gridColumns + totalTiles) % totalTiles;
+                    break;
+                case 'down':
+                    currentFocusIndex = (currentFocusIndex + gridColumns) % totalTiles;
+                    break;
+                case 'left':
+                    currentFocusIndex = (currentFocusIndex - 1 + totalTiles) % totalTiles;
+                    break;
+                case 'right':
+                    currentFocusIndex = (currentFocusIndex + 1) % totalTiles;
+                    break;
+            }
+
+            // Apply focus to new tile
+            allTiles[currentFocusIndex].classList.add('focused');
+
+            // Ensure the focused tile is in view
+            allTiles[currentFocusIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function selectTile() {
+            const focusedTile = document.querySelector('.tile.focused');
+            if (focusedTile) {
+                window.location.href = focusedTile.dataset.url;
+            }
+        }
+
+        // Event listeners for keyboard navigation
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    navigateGrid('up');
+                    event.preventDefault();
+                    break;
+                case 'ArrowDown':
+                    navigateGrid('down');
+                    event.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    navigateGrid('left');
+                    event.preventDefault();
+                    break;
+                case 'ArrowRight':
+                    navigateGrid('right');
+                    event.preventDefault();
+                    break;
+                case 'Enter':
+                    selectTile();
+                    event.preventDefault();
+                    break;
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load tiles from JSON file
+            loadTiles();
+
+            // Recalculate grid columns on window resize
+            window.addEventListener('resize', function () {
+                const newColumns = Math.floor(window.innerWidth / 330);
+                if (newColumns !== gridColumns) {
+                    gridColumns = newColumns;
+                }
+            });
+
+            // Handle mouse interaction as well for testing
+            document.querySelectorAll('.tile').forEach((tile, index) => {
+                tile.addEventListener('click', function () {
+                    if (tile.dataset.url) {
+                        window.location.href = tile.dataset.url;
+                    }
+                });
+
+                tile.addEventListener('mouseover', function () {
+                    const focusedTile = document.querySelector('.tile.focused');
+                    if (focusedTile) {
+                        focusedTile.classList.remove('focused');
+                    }
+                    tile.classList.add('focused');
+                    currentFocusIndex = index;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

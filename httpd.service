@@ -1,0 +1,13 @@
+[Unit]
+Description=Local Web Server (BusyBox HTTPD)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/busybox httpd -f -p 127.0.0.1:80 -h /home/pi/web
+WorkingDirectory=/home/pi/web
+Restart=always
+User=pi
+Group=pi
+
+[Install]
+WantedBy=multi-user.target

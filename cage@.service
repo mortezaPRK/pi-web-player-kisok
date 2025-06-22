@@ -8,11 +8,12 @@ After=dbus.socket systemd-logind.service
 Conflicts=getty@%i.service
 After=getty@%i.service
 After=network-online.target
+After=httpd.service
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/cage /usr/local/bin/chromium_launcher
-Environment="URL=<UPDATE ME>"
+Environment="URL=http://localhost"
 Restart=always
 User=1000
 UtmpIdentifier=%I
@@ -26,5 +27,4 @@ PAMName=1000
 
 [Install]
 WantedBy=graphical.target
-#Alias=display-manager.service
 DefaultInstance=tty7

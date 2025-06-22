@@ -38,3 +38,15 @@ mappings:
           moveX: 4096
       - mouse:
           moveY: 4096
+
+  - cecCode: 114
+    actions:
+      - keyboard:
+          type: down
+          code: 56
+      - keyboard:
+          type: press
+          code: 102
+      - keyboard:
+          type: up
+          code: 56
