@@ -1,0 +1,15 @@
+[Unit]
+Description=Starts cec keyboard
+After=graphical.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+ExecStart=/usr/local/bin/cec-keyboard -config /etc/cec-keyboard.yml
+KillMode=process
+TimeoutSec=180
+
+[Install]
+WantedBy=basic.target
+

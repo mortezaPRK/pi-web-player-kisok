@@ -1,0 +1,40 @@
+adapter: "/dev/cec0"
+name: "piboard"
+type: "recording"
+mappings:
+  - cecCode: 1
+    actions:
+      - keyboard:
+          type: press
+          code: 103
+
+  - cecCode: 2
+    actions:
+      - keyboard:
+          type: press
+          code: 108
+
+  - cecCode: 3
+    actions:
+      - keyboard:
+          type: press
+          code: 105
+
+  - cecCode: 4
+    actions:
+      - keyboard:
+          type: press
+          code: 106
+
+  - cecCode: 0
+    actions:
+      - keyboard:
+          type: press
+          code: 28
+
+  - cecCode: 113
+    actions:
+      - mouse:
+          moveX: 4096
+      - mouse:
+          moveY: 4096
