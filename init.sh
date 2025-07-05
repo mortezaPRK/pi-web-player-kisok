@@ -1,12 +1,22 @@
 #!/bin/bash
 
-wget https://github.com/mortezaPRK/cec-keyboard/releases/download/v0.1.0/cec-keyboard_linux_arm64
-mv cec-keyboard_linux_arm64 cec-keyboard
-sudo sed -i 's/dtoverlay=vc4.*/dtoverlay=vc4-kms-v3d-pi4,cma-512,nohdmi1/g' /boot/firmware/config.txt && \
-sudo sed -i 's/camera_auto_detect=1/dtoverlay=disable-bt/g' /boot/firmware/config.txt && \
-sudo apt update && \
-sudo apt dist-upgrade -y && \
-sudo apt install -y \
+set -e
+
+BIN_DIR=/usr/local/bin
+CODE_NAME=$(lsb_release -cs)
+CEC_VERSION=0.1.1
+SCRIPT_DIR=$(dirname $(realpath $0))
+URL="https://github.com/mortezaPRK/cec-keyboard/releases/download/v${CEC_VERSION}/cec-keyboard_${CODE_NAME}_linux_amd64"
+
+# check if user is root
+if [ $EUID -ne 0 ]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+# Dependencies
+apt update
+apt install -y \
     cec-utils \
     chromium-browser \
     gstreamer1.0-libav \
@@ -15,14 +25,22 @@ sudo apt install -y \
     gstreamer1.0-plugins-good \
     rpi-chromium-mods \
     seatd \
-    vim \
-    uxplay && \
-sudo mv /home/pi/backup/pi /etc/pam.d/pi && \
-sudo mv /home/pi/backup/cage@.service /home/pi/backup/uxplay.service /home/pi/backup/cec-keyboard.service /etc/systemd/system/ && \
-sudo mv /home/pi/cec-keyboard /home/pi/backup/chromium_launcher /usr/local/bin/ && \
-sudo mv /home/pi/backup/cec-keyboard.yml /etc/
-sudo systemctl daemon-reload && \
-sudo systemctl enable cec-keyboard.service cage@tty1.service uxplay.service && \
-sudo systemctl set-default graphical.target && \
-sudo reboot
+    uxplay \
+    wget
 
+# Binaries
+wget "$URL" -O $BIN_DIR/cec-keyboard
+mv $SCRIPT_DIR/bin/chromium_launcher $BIN_DIR/
+chmod +x $BIN_DIR/cec-keyboard $BIN_DIR/chromium_launcher
+
+# Services
+for service in $SCRIPT_DIR/services/*; do
+    sed -i "s|<WD>|$SCRIPT_DIR|g" $service
+    mv $service /etc/systemd/system/
+done
+
+systemctl daemon-reload
+systemctl enable cec-keyboard.service cage@tty1.service uxplay.service httpd.service
+systemctl set-default graphical.target
+
+rm -r bin services init.sh

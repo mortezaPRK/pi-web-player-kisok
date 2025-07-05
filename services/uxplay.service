@@ -6,7 +6,7 @@ After=ydotoold.target
 Type=simple
 Restart=always
 RestartSec=3
-ExecStart=/usr/bin/uxplay -n rpi -nh  -vs waylandsink
+ExecStart=/usr/bin/uxplay -n TV -nh  -vs waylandsink
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
 KillMode=process
 TimeoutSec=180

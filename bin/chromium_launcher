@@ -1,0 +1,18 @@
+#!/bin/bash
+
+/usr/bin/chromium-browser \
+    --use-gl=angle \
+    --enable-gpu-rasterization \
+    --enable-accelerated-video-decode \
+    --enable-features=VaapiVideoDecoder \
+    --enable-zero-copy \
+    --noerrdialogs \
+    --disable-infobars \
+    --no-first-run \
+    --ozone-platform=wayland \
+    --enable-features=OverlayScrollbar \
+    --enable-features=UseOzonePlatform  \
+    --homepage="$URL" \
+    --user-agent="Mozilla/5.0 (Linux; Android 9; SHIELD Android TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36" \
+    --kiosk \
+    "$URL"
