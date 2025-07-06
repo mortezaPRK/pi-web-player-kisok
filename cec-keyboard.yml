@@ -32,6 +32,12 @@ mappings:
           type: press
           code: 28
 
+  - cecCode: 145
+    actions:
+      - keyboard:
+          type: press
+          code: 14
+
   - cecCode: 113
     actions:
       - mouse:
@@ -39,7 +45,7 @@ mappings:
       - mouse:
           moveY: 4096
 
-  - cecCode: 114
+  - cecCode: 13
     actions:
       - keyboard:
           type: down
