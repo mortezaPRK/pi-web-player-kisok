@@ -6,7 +6,7 @@ BIN_DIR=/usr/local/bin
 CODE_NAME=$(lsb_release -cs)
 CEC_VERSION=0.1.1
 SCRIPT_DIR=$(dirname $(realpath $0))
-URL="https://github.com/mortezaPRK/cec-keyboard/releases/download/v${CEC_VERSION}/cec-keyboard_${CODE_NAME}_linux_amd64"
+URL="https://github.com/mortezaPRK/cec-keyboard/releases/download/v${CEC_VERSION}/cec-keyboard_${CODE_NAME}_linux_arm64"
 
 # check if user is root
 if [ $EUID -ne 0 ]; then
@@ -17,6 +17,7 @@ fi
 # Dependencies
 apt update
 apt install -y \
+    cage \
     cec-utils \
     chromium-browser \
     gstreamer1.0-libav \
