@@ -18,6 +18,7 @@ fi
 apt update
 apt install -y \
     cage \
+    pipewire-audio \
     cec-utils \
     chromium-browser \
     gstreamer1.0-libav \
