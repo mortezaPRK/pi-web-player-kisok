@@ -106,185 +106,1371 @@
             padding: 3rem;
             display: none;
         }
+
+        /* Search Section Styles */
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--focus-color);
+        }
+
+        .refresh-button {
+            padding: 15px 20px;
+            font-size: 1.5rem;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-button:hover,
+        .refresh-button:focus {
+            border-color: var(--focus-color);
+            background-color: var(--focus-color);
+        }
+
+        .search-results {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(30, 30, 30, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-result-item:hover,
+        .search-result-item.focused {
+            background-color: rgba(40, 40, 40, 0.9);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item.saved {
+            background-color: rgba(0, 123, 255, 0.2);
+        }
+
+        .search-result-item.saved:hover {
+            background-color: rgba(0, 123, 255, 0.3);
+        }
+
+        .search-result-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+            background-color: #444;
+        }
+
+        .search-result-info {
+            flex: 1;
+        }
+
+        .search-result-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .search-result-streams {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .search-result-status {
+            font-size: 0.8rem;
+            color: var(--focus-color);
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 0;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80%;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ffffff;
+        }
+
+        .stream-options {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .stream-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .stream-option:hover,
+        .stream-option.focused {
+            background-color: rgba(40, 40, 40, 0.9);
+        }
+
+        .stream-option:last-child {
+            margin-bottom: 0;
+        }
+
+        /* TV Navigation Styles */
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .search-input.focused,
+        .refresh-button.focused,
+        .keyboard-toggle.focused {
+            border-color: var(--focus-color);
+            box-shadow: 0 0 0 2px var(--focus-color);
+        }
+
+        .keyboard-toggle {
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .keyboard-toggle:hover,
+        .keyboard-toggle:focus {
+            border-color: var(--focus-color);
+            background-color: var(--focus-color);
+        }
+
+        /* Virtual Keyboard Styles */
+        .virtual-keyboard {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-top: 2px solid #333;
+            z-index: 1001;
+            display: none;
+        }
+
+        .keyboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .keyboard-key {
+            padding: 15px 20px;
+            background-color: rgba(50, 50, 50, 0.8);
+            border: 2px solid #555;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 50px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .keyboard-key:hover,
+        .keyboard-key.focused {
+            background-color: var(--focus-color);
+            border-color: var(--focus-color);
+            transform: translateY(-2px);
+        }
+
+        .keyboard-key.wide {
+            min-width: 120px;
+        }
+
+        .keyboard-key.extra-wide {
+            min-width: 200px;
+        }
+
+        .keyboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .keyboard-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .keyboard-close {
+            background-color: #dc3545;
+            border: 2px solid #dc3545;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .keyboard-close:hover,
+        .keyboard-close.focused {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Media Center</h1>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="nav-container">
+                <input type="text" id="searchInput" placeholder="Search for channels..." class="search-input" readonly>
+                <button id="keyboardToggle" class="keyboard-toggle">ABC</button>
+                <button id="refreshButton" class="refresh-button" title="Refresh streams">⟳</button>
+            </div>
+            <div id="searchResults" class="search-results" style="display: none;"></div>
+        </div>
+
         <div id="tilesContainer" class="tiles-container">
             <div id="loadingIndicator">
                 Loading tiles...
             </div>
         </div>
     </div>
-    
+
+    <!-- Virtual Keyboard -->
+    <div id="virtualKeyboard" class="virtual-keyboard">
+        <div class="keyboard-container">
+            <div class="keyboard-header">
+                <div class="keyboard-title">Virtual Keyboard</div>
+                <button id="keyboardClose" class="keyboard-close">Close</button>
+            </div>
+            <div class="keyboard-row">
+                <div class="keyboard-key" data-key="1">1</div>
+                <div class="keyboard-key" data-key="2">2</div>
+                <div class="keyboard-key" data-key="3">3</div>
+                <div class="keyboard-key" data-key="4">4</div>
+                <div class="keyboard-key" data-key="5">5</div>
+                <div class="keyboard-key" data-key="6">6</div>
+                <div class="keyboard-key" data-key="7">7</div>
+                <div class="keyboard-key" data-key="8">8</div>
+                <div class="keyboard-key" data-key="9">9</div>
+                <div class="keyboard-key" data-key="0">0</div>
+            </div>
+            <div class="keyboard-row">
+                <div class="keyboard-key" data-key="q">Q</div>
+                <div class="keyboard-key" data-key="w">W</div>
+                <div class="keyboard-key" data-key="e">E</div>
+                <div class="keyboard-key" data-key="r">R</div>
+                <div class="keyboard-key" data-key="t">T</div>
+                <div class="keyboard-key" data-key="y">Y</div>
+                <div class="keyboard-key" data-key="u">U</div>
+                <div class="keyboard-key" data-key="i">I</div>
+                <div class="keyboard-key" data-key="o">O</div>
+                <div class="keyboard-key" data-key="p">P</div>
+            </div>
+            <div class="keyboard-row">
+                <div class="keyboard-key" data-key="a">A</div>
+                <div class="keyboard-key" data-key="s">S</div>
+                <div class="keyboard-key" data-key="d">D</div>
+                <div class="keyboard-key" data-key="f">F</div>
+                <div class="keyboard-key" data-key="g">G</div>
+                <div class="keyboard-key" data-key="h">H</div>
+                <div class="keyboard-key" data-key="j">J</div>
+                <div class="keyboard-key" data-key="k">K</div>
+                <div class="keyboard-key" data-key="l">L</div>
+            </div>
+            <div class="keyboard-row">
+                <div class="keyboard-key" data-key="z">Z</div>
+                <div class="keyboard-key" data-key="x">X</div>
+                <div class="keyboard-key" data-key="c">C</div>
+                <div class="keyboard-key" data-key="v">V</div>
+                <div class="keyboard-key" data-key="b">B</div>
+                <div class="keyboard-key" data-key="n">N</div>
+                <div class="keyboard-key" data-key="m">M</div>
+                <div class="keyboard-key wide" data-key="backspace">⌫</div>
+            </div>
+            <div class="keyboard-row">
+                <div class="keyboard-key extra-wide" data-key="space">Space</div>
+                <div class="keyboard-key wide" data-key="clear">Clear</div>
+                <div class="keyboard-key wide" data-key="search">Search</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stream Selection Modal -->
+    <div id="streamModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Select Stream Quality</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div id="streamOptions" class="stream-options"></div>
+        </div>
+    </div>
+
     <script>
-        // Tiles data will be loaded from tiles.json
-        let tiles = [];
-        
-        // Fetch tiles data from JSON file
-        async function loadTiles() {
-            try {
-                const response = await fetch('tiles.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load tiles data');
+        let tilesConfig = [];
+        const savedStreams = (() => {
+            const localStorageKey = 'mediaCenterSavedStreams';
+            let streams = {};
+
+            const saved = localStorage.getItem(localStorageKey);
+            if (saved) {
+                streams = JSON.parse(saved);
+            }
+
+            function store() {
+                localStorage.setItem(localStorageKey, JSON.stringify(streams));
+            };
+
+            return {
+                get: (key) => streams[key] || null,
+                all: () => [...Object.values(streams)],
+                set: (key, value) => {
+                    if (value == null) {
+                        delete streams[key];
+                    } else {
+                        streams[key] = value;
+                    }
+                    localStorage.setItem(localStorageKey, JSON.stringify(streams));
+                },
+            };
+        })();
+
+        const remoteStreams = (() => {
+            const localStorageKey = 'mediaCenterStreams';
+            let streams = {};
+
+            /**
+             * @returns {Promise<Object.<string, {logo: string|null, streams: {url: string, quality: string}[]}>>}
+             */
+            async function loadStreams() {
+                try {
+                    const streamsRes = await fetch('https://iptv-org.github.io/api/streams.json');
+                    const streamsData = await streamsRes.json();
+
+                    const logosRes = await fetch('https://iptv-org.github.io/api/logos.json');
+                    const logosData = await logosRes.json();
+
+                    const logos = logosData.reduce((acc, { channel, url }) => {
+                        acc[channel] = url;
+                        return acc;
+                    }, {});
+
+                    return streamsData.reduce((acc, { channel, url, quality }) => {
+                        if (acc[channel] == undefined) {
+                            acc[channel] = {
+                                logo: logos[channel] || null,
+                                streams: []
+                            }
+                        }
+                        acc[channel].streams.push({ url, quality });
+
+                        return acc;
+                    }, {});
+                } catch (error) {
+                    console.error('Failed to load remote streams:', error);
+                    return {};
                 }
-                tiles = await response.json();
-                initializeTiles();
-            } catch (error) {
-                console.error('Error loading tiles:', error);
-                // Fallback message if tiles can't be loaded
-                document.getElementById('tilesContainer').innerHTML = 
-                    '<div style="text-align: center; padding: 2rem; color: #ff6b6b;">Failed to load tiles data. Please check the connection or try again later.</div>';
-            } finally {
-                // Hide loading indicator
-                document.getElementById('loadingIndicator').style.display = 'none';
             }
-        }
 
-        // Initialize the tile grid
-        function initializeTiles() {
-            const tilesContainer = document.getElementById('tilesContainer');
-            // Clear loading indicator
-            tilesContainer.innerHTML = '';
+            async function load(forceReload = false) {
+                const cachedStreams = localStorage.getItem(localStorageKey);
+                if (forceReload || cachedStreams == null) {
+                    streams = await loadStreams();
+                    localStorage.setItem(localStorageKey, JSON.stringify(streams));
+                } else {
+                    streams = JSON.parse(cachedStreams);
+                }
+            }
 
-            tiles.forEach((tile, index) => {
-                const tileElement = document.createElement('div');
-                tileElement.className = 'tile';
-                tileElement.dataset.index = index;
-                
-                // Build the final URL in initialize function
-                // If it's a stream, build player URL, otherwise use the direct URL
-                const finalUrl = tile.stream 
-                    ? `player.html?stream=${encodeURIComponent(tile.stream)}`
-                    : tile.url;
-                tileElement.dataset.url = finalUrl;
+            return {
+                get: () => streams,
+                load: load,
+            };
+        })();
 
-                const imageElement = document.createElement('img');
-                imageElement.className = 'tile-image';
-                imageElement.src = tile.image;
-                imageElement.alt = tile.name;
+        const loadingIndicator = (() => {
+            const element = document.getElementById('loadingIndicator');
 
-                const contentElement = document.createElement('div');
-                contentElement.className = 'tile-content';
+            return {
+                show: () => {
+                    element.style.display = 'block';
+                },
+                hide: () => {
+                    element.style.display = 'none';
+                },
+                isVisible: () => {
+                    return element.style.display !== 'none';
+                },
+                getElement: () => element
+            };
+        })();
 
-                const nameElement = document.createElement('div');
-                nameElement.className = 'tile-name';
-                nameElement.textContent = tile.name;
+        const virtualKeyboard = (() => {
+            const element = document.getElementById('virtualKeyboard');
+            const closeButton = document.getElementById('keyboardClose');
 
-                contentElement.appendChild(nameElement);
-                tileElement.appendChild(imageElement);
-                tileElement.appendChild(contentElement);
+            const layout = [
+                ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+                ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+                ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'backspace'],
+                ['space', 'clear', 'search']
+            ];
 
-                tilesContainer.appendChild(tileElement);
+            let currentRow = 0;
+            let currentCol = 0;
+            let searchQuery = '';
+            let searchTimeout;
+
+            function updateFocus() {
+                // Remove all keyboard focus
+                document.querySelectorAll('.keyboard-key').forEach(key => key.classList.remove('focused'));
+                closeButton.classList.remove('focused');
+
+                if (currentRow === -1) {
+                    // Focus on close button
+                    closeButton.classList.add('focused');
+                } else {
+                    // Focus on keyboard key
+                    const rows = document.querySelectorAll('.keyboard-row');
+                    if (rows[currentRow]) {
+                        const keys = rows[currentRow].querySelectorAll('.keyboard-key');
+                        if (keys[currentCol]) {
+                            keys[currentCol].classList.add('focused');
+                        }
+                    }
+                }
+            }
+
+            function handleInput(key) {
+                const searchInput = document.getElementById('searchInput');
+
+                if (key === 'backspace') {
+                    searchQuery = searchQuery.slice(0, -1);
+                } else if (key === 'clear') {
+                    searchQuery = '';
+                } else if (key === 'space') {
+                    searchQuery += ' ';
+                } else if (key === 'search') {
+                    search.searchChannels(searchQuery);
+                    hide(); // Close keyboard after search
+                    if (searchQuery.trim()) {
+                        // Only switch to search mode if there are actual results
+                        setTimeout(() => {
+                            if (navigation.getSearchResults().length > 0) {
+                                navigation.setMode('search');
+                                navigation.setCurrentSearchIndex(0);
+                            } else {
+                                // No results, go back to nav mode and focus on the search input
+                                navigation.setMode('nav');
+                                navigation.setCurrentNavIndex(0); // Focus on search input
+                            }
+                        }, 100); // Small delay to let searchChannels complete
+                    } else {
+                        navigation.setMode('nav');
+                        navigation.setCurrentNavIndex(0); // Focus on search input
+                    }
+                    return;
+                } else if (key.length === 1) {
+                    searchQuery += key;
+                }
+
+                searchInput.value = searchQuery;
+
+                // Auto-search as user types
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    if (searchQuery.trim()) {
+                        search.searchChannels(searchQuery);
+                    } else {
+                        search.hideResults();
+                    }
+                }, 300);
+            }
+
+            function show() {
+                element.style.display = 'block';
+                navigation.setMode('keyboard');
+                currentRow = 0;
+                currentCol = 0;
+                updateFocus();
+            }
+
+            function hide() {
+                element.style.display = 'none';
+                navigation.setMode('nav');
+                navigation.setCurrentNavIndex(0); // Back to search input so user can see their query
+            }
+
+            function handleNavigation(key) {
+                switch (key) {
+                    case 'ArrowUp':
+                        if (currentRow === -1) {
+                            currentRow = layout.length - 1;
+                            currentCol = Math.min(currentCol, layout[currentRow].length - 1);
+                        } else if (currentRow > 0) {
+                            currentRow--;
+                            currentCol = Math.min(currentCol, layout[currentRow].length - 1);
+                        } else {
+                            currentRow = -1; // Go to close button
+                        }
+                        updateFocus();
+                        break;
+                    case 'ArrowDown':
+                        if (currentRow === -1) {
+                            currentRow = 0;
+                            currentCol = Math.min(currentCol, layout[currentRow].length - 1);
+                        } else if (currentRow < layout.length - 1) {
+                            currentRow++;
+                            currentCol = Math.min(currentCol, layout[currentRow].length - 1);
+                        } else {
+                            currentRow = -1; // Go to close button
+                        }
+                        updateFocus();
+                        break;
+                    case 'ArrowLeft':
+                        if (currentRow === -1) return;
+                        if (currentCol > 0) {
+                            currentCol--;
+                        } else {
+                            currentCol = layout[currentRow].length - 1;
+                        }
+                        updateFocus();
+                        break;
+                    case 'ArrowRight':
+                        if (currentRow === -1) return;
+                        if (currentCol < layout[currentRow].length - 1) {
+                            currentCol++;
+                        } else {
+                            currentCol = 0;
+                        }
+                        updateFocus();
+                        break;
+                    case 'Enter':
+                        if (currentRow === -1) {
+                            hide();
+                        } else {
+                            const key = layout[currentRow][currentCol];
+                            handleInput(key);
+                        }
+                        break;
+                    case 'Escape':
+                        hide();
+                        break;
+                }
+            }
+
+            function setupEventListeners() {
+                // Setup virtual keyboard key clicks
+                document.querySelectorAll('.keyboard-key').forEach(key => {
+                    key.addEventListener('click', () => {
+                        const keyValue = key.dataset.key;
+                        handleInput(keyValue);
+                    });
+                });
+
+                // Setup close button
+                closeButton.addEventListener('click', hide);
+            }
+
+            return {
+                show,
+                hide,
+                handleNavigation,
+                handleInput,
+                setupEventListeners,
+                getSearchQuery: () => searchQuery,
+                setSearchQuery: (query) => { searchQuery = query; }
+            };
+        })();
+
+        const navigation = (() => {
+            // Private state
+            let mode = 'tiles'; // 'tiles', 'nav', 'search', 'modal', 'keyboard'
+            let currentNavIndex = 0; // For navigation elements
+            let currentSearchResults = [];
+            let currentSearchIndex = -1;
+            let currentStreamOptionIndex = 0;
+            let currentFocusIndex = 0;
+            let gridColumns = Math.floor(window.innerWidth / 330); // Approximate number of columns
+
+            const navElements = ['searchInput', 'keyboardToggle', 'refreshButton'];
+
+            function updateNavFocus() {
+                // Remove all nav focus
+                navElements.forEach(id => {
+                    document.getElementById(id).classList.remove('focused');
+                });
+
+                // Add focus to current nav element
+                if (currentNavIndex >= 0 && currentNavIndex < navElements.length) {
+                    document.getElementById(navElements[currentNavIndex]).classList.add('focused');
+                }
+            }
+
+            function updateTileFocus() {
+                const allTiles = document.querySelectorAll('.tile');
+                allTiles.forEach(tile => tile.classList.remove('focused'));
+
+                if (allTiles[currentFocusIndex]) {
+                    allTiles[currentFocusIndex].classList.add('focused');
+                }
+            }
+
+            function updateSearchResultsFocus() {
+                const items = document.querySelectorAll('.search-result-item');
+                items.forEach(item => item.classList.remove('focused'));
+
+                if (currentSearchIndex >= 0 && items[currentSearchIndex]) {
+                    items[currentSearchIndex].classList.add('focused');
+                    items[currentSearchIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+
+            function updateStreamOptionFocus() {
+                const options = document.querySelectorAll('.stream-option');
+                options.forEach(option => option.classList.remove('focused'));
+
+                if (currentStreamOptionIndex >= 0 && options[currentStreamOptionIndex]) {
+                    options[currentStreamOptionIndex].classList.add('focused');
+                    // Scroll focused option into view
+                    options[currentStreamOptionIndex].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }
+            }
+
+            function navigateGrid(direction) {
+                const allTiles = document.querySelectorAll('.tile');
+                const totalTiles = allTiles.length;
+
+                // Remove current focus
+                allTiles[currentFocusIndex].classList.remove('focused');
+
+                // Calculate new focus position based on direction
+                switch (direction) {
+                    case 'up':
+                        currentFocusIndex = (currentFocusIndex - gridColumns + totalTiles) % totalTiles;
+                        break;
+                    case 'down':
+                        currentFocusIndex = (currentFocusIndex + gridColumns) % totalTiles;
+                        break;
+                    case 'left':
+                        currentFocusIndex = (currentFocusIndex - 1 + totalTiles) % totalTiles;
+                        break;
+                    case 'right':
+                        currentFocusIndex = (currentFocusIndex + 1) % totalTiles;
+                        break;
+                }
+
+                // Apply focus to new tile
+                allTiles[currentFocusIndex].classList.add('focused');
+
+                // Ensure the focused tile is in view
+                allTiles[currentFocusIndex].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
+            function selectTile() {
+                const focusedTile = document.querySelector('.tile.focused');
+                if (focusedTile) {
+                    window.location.href = focusedTile.dataset.url;
+                }
+            }
+
+            function selectStreamOption() {
+                const options = document.querySelectorAll('.stream-option');
+                if (currentStreamOptionIndex >= 0 && options[currentStreamOptionIndex]) {
+                    options[currentStreamOptionIndex].click();
+                }
+            }
+
+            return {
+                // Mode management
+                getMode: () => mode,
+                setMode: (newMode) => {
+                    mode = newMode;
+                    switch (mode) {
+                        case 'tiles':
+                            updateTileFocus();
+                            break;
+                        case 'nav':
+                            updateNavFocus();
+                            break;
+                        case 'search':
+                            updateSearchResultsFocus();
+                            break;
+                        case 'modal':
+                            updateStreamOptionFocus();
+                            break;
+                    }
+                },
+
+                // Navigation index management
+                getCurrentNavIndex: () => currentNavIndex,
+                setCurrentNavIndex: (index) => {
+                    currentNavIndex = index;
+                    updateNavFocus();
+                },
+
+                // Focus index management
+                getCurrentFocusIndex: () => currentFocusIndex,
+                setCurrentFocusIndex: (index) => {
+                    currentFocusIndex = index;
+                    updateTileFocus();
+                },
+
+                // Search results management
+                getSearchResults: () => currentSearchResults,
+                setSearchResults: (results) => {
+                    currentSearchResults = results;
+                },
+                getCurrentSearchIndex: () => currentSearchIndex,
+                setCurrentSearchIndex: (index) => {
+                    currentSearchIndex = index;
+                    updateSearchResultsFocus();
+                },
+
+                // Stream option management
+                getCurrentStreamOptionIndex: () => currentStreamOptionIndex,
+                setCurrentStreamOptionIndex: (index) => {
+                    currentStreamOptionIndex = index;
+                    updateStreamOptionFocus();
+                },
+
+                // Grid management
+                getGridColumns: () => gridColumns,
+                setGridColumns: (columns) => {
+                    gridColumns = columns;
+                },
+
+                // Navigation actions
+                navigateGrid,
+                selectTile,
+                selectStreamOption,
+
+                // Focus update methods
+                updateNavFocus,
+                updateTileFocus,
+                updateSearchResultsFocus,
+                updateStreamOptionFocus
+            };
+        })();
+
+        const search = (() => {
+            function showResults(results) {
+                const searchResults = document.getElementById('searchResults');
+                if (results.length === 0) {
+                    searchResults.style.display = 'none';
+                    // When no results, don't automatically change navigation mode
+                    // Let the user stay in their current mode (keyboard, nav, etc.)
+                    return;
+                }
+
+                navigation.setSearchResults(results);
+                navigation.setCurrentSearchIndex(-1);
+
+                searchResults.innerHTML = '';
+                results.forEach((channel, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.dataset.index = index;
+
+                    const saved = savedStreams.get(channel.name);
+                    if (saved) {
+                        item.classList.add('saved');
+                    }
+
+                    const logo = document.createElement('img');
+                    logo.className = 'search-result-logo';
+                    logo.src = channel.logo || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiM0NDQiPjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjUiLz48L3N2Zz4=';
+                    logo.alt = channel.name;
+
+                    const info = document.createElement('div');
+                    info.className = 'search-result-info';
+
+                    const name = document.createElement('div');
+                    name.className = 'search-result-name';
+                    name.textContent = channel.name;
+
+                    const streams = document.createElement('div');
+                    streams.className = 'search-result-streams';
+                    streams.textContent = `${channel.streams.length} stream(s) available`;
+
+                    info.appendChild(name);
+                    info.appendChild(streams);
+
+                    if (saved) {
+                        const status = document.createElement('div');
+                        status.className = 'search-result-status';
+                        status.textContent = 'Added';
+                        info.appendChild(status);
+                    }
+
+                    item.appendChild(logo);
+                    item.appendChild(info);
+
+                    searchResults.appendChild(item);
+                });
+
+                searchResults.style.display = 'block';
+            }
+
+            function hideResults() {
+                document.getElementById('searchResults').style.display = 'none';
+                navigation.setSearchResults([]);
+                navigation.setCurrentSearchIndex(-1);
+                if (navigation.getMode() === 'search') {
+                    navigation.setMode('nav');
+                }
+            }
+
+            function selectResult(channel) {
+                const saved = savedStreams.get(channel.name);
+
+                if (saved) {
+                    // Remove from saved streams
+                    savedStreams.set(channel.name, null);
+                    tiles.refresh();
+                    hideResults();
+                    virtualKeyboard.setSearchQuery('');
+                    document.getElementById('searchInput').value = '';
+                } else {
+                    // Add to saved streams
+                    if (channel.streams.length === 1) {
+                        // Only one stream, add directly
+                        const streamData = {
+                            name: channel.name,
+                            image: channel.logo || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzQ0NCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIxMCIvPjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=',
+                            stream: channel.streams[0].url
+                        };
+                        savedStreams.set(channel.name, streamData);
+                        tiles.refresh();
+                        hideResults();
+                        virtualKeyboard.setSearchQuery('');
+                        document.getElementById('searchInput').value = '';
+                    } else {
+                        // Multiple streams, show selection modal
+                        showStreamSelectionModal(channel);
+                    }
+                }
+            }
+
+            function searchChannels(query) {
+                if (!query.trim()) {
+                    hideResults();
+                    return;
+                }
+
+                const streams = remoteStreams.get();
+                const results = Object.entries(streams)
+                    .filter(([name]) => name.toLowerCase().includes(query.toLowerCase()))
+                    .map(([name, data]) => ({ name, ...data }))
+                    .slice(0, 10); // Limit to 10 results
+
+                showResults(results);
+            }
+
+            return {
+                showResults,
+                hideResults,
+                selectResult,
+                searchChannels
+            };
+        })();
+
+        function showStreamSelectionModal(channel) {
+            const modal = document.getElementById('streamModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const streamOptions = document.getElementById('streamOptions');
+
+            modalTitle.textContent = `Select Stream Quality - ${channel.name}`;
+            streamOptions.innerHTML = '';
+
+            channel.streams.forEach((stream, index) => {
+                const option = document.createElement('div');
+                option.className = 'stream-option';
+                option.dataset.index = index;
+
+                const quality = document.createElement('span');
+                quality.textContent = stream.quality || `Stream ${index + 1}`;
+
+                const url = document.createElement('span');
+                url.style.fontSize = '0.9rem';
+                url.style.color = '#ccc';
+                url.textContent = stream.url.length > 50 ? stream.url.substring(0, 50) + '...' : stream.url;
+
+                option.appendChild(quality);
+                option.appendChild(url);
+
+                option.addEventListener('click', () => {
+                    const streamData = {
+                        name: channel.name,
+                        image: channel.logo || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzQ0NCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIxMCIvPjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=',
+                        stream: stream.url
+                    };
+                    savedStreams.set(channel.name, streamData);
+                    hideStreamSelectionModal();
+                    tiles.refresh();
+                    search.hideResults();
+                    virtualKeyboard.setSearchQuery('');
+                    document.getElementById('searchInput').value = '';
+                });
+
+                streamOptions.appendChild(option);
             });
 
-            // Set focus to the first tile by default
-            const firstTile = document.querySelector('.tile');
-            firstTile.classList.add('focused');
-            currentFocusIndex = 0;
+            modal.style.display = 'flex';
+            navigation.setMode('modal');
+            navigation.setCurrentStreamOptionIndex(0);
         }
 
-        // Initialize keyboard navigation
-        let currentFocusIndex = 0;
-        let gridColumns = Math.floor(window.innerWidth / 330); // Approximate number of columns
+        function hideStreamSelectionModal() {
+            document.getElementById('streamModal').style.display = 'none';
+            navigation.setMode('nav');
+        }
 
-        function navigateGrid(direction) {
-            const allTiles = document.querySelectorAll('.tile');
-            const totalTiles = allTiles.length;
-
-            // Remove current focus
-            allTiles[currentFocusIndex].classList.remove('focused');
-
-            // Calculate new focus position based on direction
-            switch (direction) {
-                case 'up':
-                    currentFocusIndex = (currentFocusIndex - gridColumns + totalTiles) % totalTiles;
-                    break;
-                case 'down':
-                    currentFocusIndex = (currentFocusIndex + gridColumns) % totalTiles;
-                    break;
-                case 'left':
-                    currentFocusIndex = (currentFocusIndex - 1 + totalTiles) % totalTiles;
-                    break;
-                case 'right':
-                    currentFocusIndex = (currentFocusIndex + 1) % totalTiles;
-                    break;
+        const tiles = (() => {
+            async function refresh() {
+                const savedStreamsList = savedStreams.all(); // Ensure saved streams are loaded
+                const combinedTiles = [...tilesConfig, ...savedStreamsList];
+                display(combinedTiles);
             }
 
-            // Apply focus to new tile
-            allTiles[currentFocusIndex].classList.add('focused');
+            function display(tilesToDisplay) {
+                const tilesContainer = document.getElementById('tilesContainer');
+                // Clear existing tiles but preserve the loading indicator
+                tilesContainer.innerHTML = '';
+                tilesContainer.appendChild(loadingIndicator.getElement());
 
-            // Ensure the focused tile is in view
-            allTiles[currentFocusIndex].scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }
+                tilesToDisplay.forEach((tile, index) => {
+                    const tileElement = document.createElement('div');
+                    tileElement.className = 'tile';
+                    tileElement.dataset.index = index;
 
-        function selectTile() {
-            const focusedTile = document.querySelector('.tile.focused');
-            if (focusedTile) {
-                window.location.href = focusedTile.dataset.url;
+                    const finalUrl = tile.stream
+                        ? `player.html?stream=${encodeURIComponent(tile.stream)}`
+                        : tile.url;
+                    tileElement.dataset.url = finalUrl;
+
+                    const imageElement = document.createElement('img');
+                    imageElement.className = 'tile-image';
+                    imageElement.src = tile.image;
+                    imageElement.alt = tile.name;
+
+                    const contentElement = document.createElement('div');
+                    contentElement.className = 'tile-content';
+
+                    const nameElement = document.createElement('div');
+                    nameElement.className = 'tile-name';
+                    nameElement.textContent = tile.name;
+
+                    contentElement.appendChild(nameElement);
+                    tileElement.appendChild(imageElement);
+                    tileElement.appendChild(contentElement);
+
+                    tilesContainer.appendChild(tileElement);
+                });
+
+                // Set focus to the first tile by default
+                const firstTile = document.querySelector('.tile');
+                if (firstTile) {
+                    firstTile.classList.add('focused');
+                    navigation.setCurrentFocusIndex(0);
+                }
+
+                // Update event listeners
+                updateEventListeners();
+
+                // Hide loading indicator when done displaying tiles
+                loadingIndicator.hide();
             }
-        }
 
-        // Event listeners for keyboard navigation
+            async function load() {
+                try {
+                    const response = await fetch('tiles.json');
+                    if (!response.ok) {
+                        throw new Error('Failed to load tiles data');
+                    }
+                    tilesConfig = await response.json();
+                    refresh();
+                } catch (error) {
+                    console.error('Error loading tiles:', error);
+                    document.getElementById('tilesContainer').innerHTML =
+                        '<div style="text-align: center; padding: 2rem; color: #ff6b6b;">Failed to load tiles data. Please check the connection or try again later.</div>';
+                } finally {
+                    loadingIndicator.hide();
+                }
+            }
+
+            function initialize() {
+                refresh();
+            }
+
+            function updateEventListeners() {
+                document.querySelectorAll('.tile').forEach((tile, index) => {
+                    // Remove old event listeners by cloning
+                    const newTile = tile.cloneNode(true);
+                    tile.parentNode.replaceChild(newTile, tile);
+
+                    newTile.addEventListener('click', function () {
+                        if (newTile.dataset.url) {
+                            window.location.href = newTile.dataset.url;
+                        }
+                    });
+
+                    newTile.addEventListener('mouseover', function () {
+                        const focusedTile = document.querySelector('.tile.focused');
+                        if (focusedTile) {
+                            focusedTile.classList.remove('focused');
+                        }
+                        newTile.classList.add('focused');
+                        navigation.setCurrentFocusIndex(index);
+                    });
+                });
+            }
+
+            return {
+                refresh,
+                display,
+                load,
+                initialize,
+                updateEventListeners
+            };
+        })();
+
         document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case 'ArrowUp':
-                    navigateGrid('up');
-                    event.preventDefault();
-                    break;
-                case 'ArrowDown':
-                    navigateGrid('down');
-                    event.preventDefault();
-                    break;
-                case 'ArrowLeft':
-                    navigateGrid('left');
-                    event.preventDefault();
-                    break;
-                case 'ArrowRight':
-                    navigateGrid('right');
-                    event.preventDefault();
-                    break;
-                case 'Enter':
-                    selectTile();
-                    event.preventDefault();
-                    break;
+            // Handle keyboard navigation
+            if (navigation.getMode() === 'keyboard') {
+                virtualKeyboard.handleNavigation(event.key);
+                event.preventDefault();
+                return;
+            }
+
+            // Handle modal navigation
+            if (navigation.getMode() === 'modal') {
+                switch (event.key) {
+                    case 'Escape':
+                        hideStreamSelectionModal();
+                        event.preventDefault();
+                        break;
+                    case 'ArrowUp':
+                        if (navigation.getCurrentStreamOptionIndex() > 0) {
+                            navigation.setCurrentStreamOptionIndex(navigation.getCurrentStreamOptionIndex() - 1);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        const options = document.querySelectorAll('.stream-option');
+                        if (navigation.getCurrentStreamOptionIndex() < options.length - 1) {
+                            navigation.setCurrentStreamOptionIndex(navigation.getCurrentStreamOptionIndex() + 1);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'Enter':
+                        navigation.selectStreamOption();
+                        event.preventDefault();
+                        break;
+                }
+                return;
+            }
+
+            // Handle search results navigation
+            if (navigation.getMode() === 'search' && navigation.getSearchResults().length > 0) {
+                switch (event.key) {
+                    case 'ArrowUp':
+                        if (navigation.getCurrentSearchIndex() <= 0) {
+                            // Go back to navigation
+                            navigation.setMode('nav');
+                            // Remove search result focus
+                            const items = document.querySelectorAll('.search-result-item');
+                            items.forEach(item => item.classList.remove('focused'));
+                        } else {
+                            navigation.setCurrentSearchIndex(navigation.getCurrentSearchIndex() - 1);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        const items = document.querySelectorAll('.search-result-item');
+                        if (navigation.getCurrentSearchIndex() < items.length - 1) {
+                            navigation.setCurrentSearchIndex(navigation.getCurrentSearchIndex() + 1);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'Enter':
+                        if (navigation.getCurrentSearchIndex() >= 0) {
+                            search.selectResult(navigation.getSearchResults()[navigation.getCurrentSearchIndex()]);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'Escape':
+                        search.hideResults();
+                        event.preventDefault();
+                        break;
+                }
+                return;
+            }
+
+            // Handle navigation bar
+            if (navigation.getMode() === 'nav') {
+                const navElements = ['searchInput', 'keyboardToggle', 'refreshButton'];
+                switch (event.key) {
+                    case 'ArrowLeft':
+                        if (navigation.getCurrentNavIndex() > 0) {
+                            navigation.setCurrentNavIndex(navigation.getCurrentNavIndex() - 1);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'ArrowRight':
+                        if (navigation.getCurrentNavIndex() < navElements.length - 1) {
+                            navigation.setCurrentNavIndex(navigation.getCurrentNavIndex() + 1);
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        if (navigation.getSearchResults().length > 0) {
+                            navigation.setMode('search');
+                            navigation.setCurrentSearchIndex(0);
+                        } else {
+                            navigation.setMode('tiles');
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'Enter':
+                        const activeElement = navElements[navigation.getCurrentNavIndex()];
+                        if (activeElement === 'searchInput') {
+                            virtualKeyboard.show();
+                        } else if (activeElement === 'keyboardToggle') {
+                            virtualKeyboard.show();
+                        } else if (activeElement === 'refreshButton') {
+                            document.getElementById('refreshButton').click();
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'Escape':
+                        navigation.setMode('tiles');
+                        event.preventDefault();
+                        break;
+                }
+                return;
+            }
+
+            // Handle tile navigation
+            if (navigation.getMode() === 'tiles') {
+                switch (event.key) {
+                    case 'ArrowUp':
+                        const tiles = document.querySelectorAll('.tile');
+                        if (navigation.getCurrentFocusIndex() >= navigation.getGridColumns()) {
+                            navigation.navigateGrid('up');
+                        } else {
+                            // Go to navigation
+                            navigation.setMode('nav');
+                            navigation.setCurrentNavIndex(0);
+                            // Remove tile focus
+                            tiles.forEach(tile => tile.classList.remove('focused'));
+                        }
+                        event.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        navigation.navigateGrid('down');
+                        event.preventDefault();
+                        break;
+                    case 'ArrowLeft':
+                        navigation.navigateGrid('left');
+                        event.preventDefault();
+                        break;
+                    case 'ArrowRight':
+                        navigation.navigateGrid('right');
+                        event.preventDefault();
+                        break;
+                    case 'Enter':
+                        navigation.selectTile();
+                        event.preventDefault();
+                        break;
+                }
+                return;
             }
         });
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Show loading indicator
+            loadingIndicator.show();
+
+            // Load remote streams in background
+            await remoteStreams.load();
+
             // Load tiles from JSON file
-            loadTiles();
+            await tiles.load();
+
+            // Set initial navigation to tiles
+            navigation.setMode('tiles');
+
+            // Setup keyboard toggle button
+            const keyboardToggle = document.getElementById('keyboardToggle');
+            keyboardToggle.addEventListener('click', virtualKeyboard.show);
+
+            // Setup virtual keyboard
+            virtualKeyboard.setupEventListeners();
+
+            // Setup refresh button
+            const refreshButton = document.getElementById('refreshButton');
+            refreshButton.addEventListener('click', async function () {
+                refreshButton.style.opacity = '0.5';
+                refreshButton.disabled = true;
+
+                // Show loading indicator
+                loadingIndicator.show();
+
+                try {
+                    await remoteStreams.load(true); // Force reload
+
+                    // Update saved streams with new data if available
+                    const streams = remoteStreams.get();
+                    savedStreams.all().forEach(stream => {
+                        if (streams[stream.name]) {
+                            // Update logo if it changed
+                            if (stream.image !== streams[stream.name].logo) {
+                                stream.image = streams[stream.name].logo || stream.image;
+                                savedStreams.set(stream.name, stream);
+                            }
+                        } else {
+                            // Remove if channel no longer exists
+                            savedStreams.set(stream.name, null);
+                        }
+                    })
+                } catch (error) {
+                    console.error('Failed to refresh streams:', error);
+                } finally {
+                    refreshButton.style.opacity = '1';
+                    refreshButton.disabled = false;
+                    // Hide loading indicator
+                    loadingIndicator.hide();
+                }
+            });
+
+            // Setup modal close
+            const modal = document.getElementById('streamModal');
+            const closeBtn = modal.querySelector('.close');
+            closeBtn.addEventListener('click', hideStreamSelectionModal);
+
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    hideStreamSelectionModal();
+                }
+            });
 
             // Recalculate grid columns on window resize
             window.addEventListener('resize', function () {
                 const newColumns = Math.floor(window.innerWidth / 330);
-                if (newColumns !== gridColumns) {
-                    gridColumns = newColumns;
+                if (newColumns !== navigation.getGridColumns()) {
+                    navigation.setGridColumns(newColumns);
                 }
-            });
-
-            // Handle mouse interaction as well for testing
-            document.querySelectorAll('.tile').forEach((tile, index) => {
-                tile.addEventListener('click', function () {
-                    if (tile.dataset.url) {
-                        window.location.href = tile.dataset.url;
-                    }
-                });
-
-                tile.addEventListener('mouseover', function () {
-                    const focusedTile = document.querySelector('.tile.focused');
-                    if (focusedTile) {
-                        focusedTile.classList.remove('focused');
-                    }
-                    tile.classList.add('focused');
-                    currentFocusIndex = index;
-                });
             });
         });
     </script>

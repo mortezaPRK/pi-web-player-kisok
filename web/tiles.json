@@ -8,15 +8,5 @@
         "name": "Youtube",
         "url": "https://www.youtube.com/tv",
         "image": "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
-    },
-    {
-        "name": "BBC Persian",
-        "stream": "https://vs-hls-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/t=3840/v=pv14/b=5070016/main.m3u8",
-        "image": "https://img.favpng.com/9/24/15/bbc-persian-television-iran-farsi-png-favpng-8D6S4e8zh8H5iNxFzmbe23QVG.jpg"
-    },
-    {
-        "name": "Bigs Buck Bunny",
-        "stream": "https://test-streams.mux.dev/x36xhzz/url_6/193039199_mp4_h264_aac_hq_7.m3u8",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg"
     }
 ]

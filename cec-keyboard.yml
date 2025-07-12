@@ -43,7 +43,7 @@ mappings:
       - mouse:
           moveX: 4096
       - mouse:
-          moveY: 4096
+          moveY: -4096
 
   - cecCode: 13
     actions:
