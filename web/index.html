@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Media Center</title>
     <style>
         :root {
@@ -292,6 +295,49 @@
 
         .stream-option:last-child {
             margin-bottom: 0;
+        }
+
+        /* URL Status Icons */
+        .url-status-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .url-status-loading {
+            background-color: #ffc107;
+            color: #000;
+            animation: pulse 1.5s infinite;
+        }
+
+        .url-status-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .url-status-error {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         /* TV Navigation Styles */
@@ -1042,23 +1088,7 @@
                     virtualKeyboard.setSearchQuery('');
                     document.getElementById('searchInput').value = '';
                 } else {
-                    // Add to saved streams
-                    if (channel.streams.length === 1) {
-                        // Only one stream, add directly
-                        const streamData = {
-                            name: channel.name,
-                            image: channel.logo || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzQ0NCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIxMCIvPjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=',
-                            stream: channel.streams[0].url
-                        };
-                        savedStreams.set(channel.name, streamData);
-                        tiles.refresh();
-                        hideResults();
-                        virtualKeyboard.setSearchQuery('');
-                        document.getElementById('searchInput').value = '';
-                    } else {
-                        // Multiple streams, show selection modal
-                        showStreamSelectionModal(channel);
-                    }
+                    showStreamSelectionModal(channel);
                 }
             }
 
@@ -1085,6 +1115,36 @@
             };
         })();
 
+        // URL reachability checker
+        const urlChecker = (() => {
+            async function _checkUrl(url, method) {
+                try {
+                    const response = await fetch(url, { method, mode: 'no-cors' });
+                    return response.ok;
+                } catch (error) {
+                    console.error(`Error checking URL ${url}:`, error);
+                    return false;
+                }
+            }
+
+            async function checkUrl(url) {
+                return (await _checkUrl(url, 'HEAD')) || (await _checkUrl(url, 'GET'));
+            }
+
+            const cache = {};
+
+            return {
+                checkUrl: (url) => {
+                    if (cache[url] !== undefined) {
+                        return cache[url];
+                    }
+                    const promise = checkUrl(url);
+                    cache[url] = promise;
+                    return promise;
+                }
+            };
+        })();
+
         function showStreamSelectionModal(channel) {
             const modal = document.getElementById('streamModal');
             const modalTitle = document.getElementById('modalTitle');
@@ -1098,16 +1158,29 @@
                 option.className = 'stream-option';
                 option.dataset.index = index;
 
+                // Create status icon element
+                const statusIcon = document.createElement('span');
+                statusIcon.className = 'url-status-icon url-status-loading';
+                statusIcon.textContent = '⟳'; // Loading spinner character
+
+                const contentContainer = document.createElement('div');
+                contentContainer.style.display = 'flex';
+                contentContainer.style.alignItems = 'center';
+                contentContainer.style.width = '100%';
+
                 const quality = document.createElement('span');
                 quality.textContent = stream.quality || `Stream ${index + 1}`;
 
                 const url = document.createElement('span');
                 url.style.fontSize = '0.9rem';
                 url.style.color = '#ccc';
+                url.style.marginLeft = 'auto';
                 url.textContent = stream.url.length > 50 ? stream.url.substring(0, 50) + '...' : stream.url;
 
-                option.appendChild(quality);
-                option.appendChild(url);
+                contentContainer.appendChild(statusIcon);
+                contentContainer.appendChild(quality);
+                contentContainer.appendChild(url);
+                option.appendChild(contentContainer);
 
                 option.addEventListener('click', () => {
                     const streamData = {
@@ -1124,6 +1197,18 @@
                 });
 
                 streamOptions.appendChild(option);
+
+                // Check URL reachability asynchronously
+                urlChecker.checkUrl(stream.url).then(isReachable => {
+                    statusIcon.className = isReachable
+                        ? 'url-status-icon url-status-success'
+                        : 'url-status-icon url-status-error';
+                    statusIcon.textContent = isReachable ? '✓' : '✗';
+                }).catch(() => {
+                    // If there's an error in the check itself, show error state
+                    statusIcon.className = 'url-status-icon url-status-error';
+                    statusIcon.textContent = '✗';
+                });
             });
 
             modal.style.display = 'flex';
@@ -1194,7 +1279,8 @@
 
             async function load() {
                 try {
-                    const response = await fetch('tiles.json');
+                    const cacheBuster = `?v=${Date.now()}`;
+                    const response = await fetch(`tiles.json${cacheBuster}`);
                     if (!response.ok) {
                         throw new Error('Failed to load tiles data');
                     }
