@@ -1099,10 +1099,11 @@
                 }
 
                 const streams = remoteStreams.get();
+                const q = query.toLowerCase();
                 const results = Object.entries(streams)
-                    .filter(([name]) => name.toLowerCase().includes(query.toLowerCase()))
+                    .filter(([name]) => name.toLowerCase().includes(q))
                     .map(([name, data]) => ({ name, ...data }))
-                    .slice(0, 10); // Limit to 10 results
+                    .slice(0, q.length > 2 ? 1000 : 10);
 
                 showResults(results);
             }
